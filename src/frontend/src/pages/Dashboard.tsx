@@ -26,6 +26,7 @@ type Page =
 
 type DashboardProps = {
   onNavigate: (page: Page) => void;
+  profileName?: string;
 };
 
 const CLASS_COLORS = [
@@ -45,7 +46,7 @@ const TODAY_DAYS = [
   "Saturday",
 ];
 
-export default function Dashboard({ onNavigate }: DashboardProps) {
+export default function Dashboard({ onNavigate, profileName }: DashboardProps) {
   const { actor } = useActor();
 
   const { data: classes, isLoading: classesLoading } = useQuery({
@@ -101,6 +102,8 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
     },
   ];
 
+  const displayName = profileName || "Umar Sir";
+
   return (
     <div className="space-y-6">
       {/* Hero Greeting */}
@@ -116,7 +119,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
         <h1 className="text-xl font-bold leading-tight">
           Welcome,
           <br />
-          Umar Sir! 👋
+          {displayName}! 👋
         </h1>
         <p className="text-sm opacity-70 mt-1">Have a great day teaching</p>
       </div>

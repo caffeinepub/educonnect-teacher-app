@@ -7,21 +7,24 @@ import {
   CalendarCheck,
   ChevronRight,
   ClipboardList,
-  GraduationCap,
   LayoutDashboard,
   Megaphone,
   Menu,
   MessageSquare,
+  UserCircle,
   Users,
+  Video,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Announcements from "./pages/Announcements";
 import Assignments from "./pages/Assignments";
 import Attendance from "./pages/Attendance";
 import Dashboard from "./pages/Dashboard";
 import Gradebook from "./pages/Gradebook";
 import Messages from "./pages/Messages";
+import Profile from "./pages/Profile";
+import Recordings from "./pages/Recordings";
 import Schedule from "./pages/Schedule";
 import Students from "./pages/Students";
 
@@ -33,7 +36,9 @@ type Page =
   | "gradebook"
   | "announcements"
   | "schedule"
-  | "messages";
+  | "messages"
+  | "recordings"
+  | "profile";
 
 const navItems: { id: Page; label: string; icon: React.ReactNode }[] = [
   { id: "dashboard", label: "Dashboard", icon: <LayoutDashboard size={20} /> },
@@ -52,6 +57,8 @@ const navItems: { id: Page; label: string; icon: React.ReactNode }[] = [
   },
   { id: "schedule", label: "Schedule", icon: <Calendar size={20} /> },
   { id: "messages", label: "Messages", icon: <MessageSquare size={20} /> },
+  { id: "recordings", label: "Recordings", icon: <Video size={20} /> },
+  { id: "profile", label: "Profile", icon: <UserCircle size={20} /> },
 ];
 
 const bottomNavItems: { id: Page; label: string; icon: React.ReactNode }[] = [
@@ -69,8 +76,33 @@ export default function App() {
   const [page, setPage] = useState<Page>("dashboard");
   const [moreOpen, setMoreOpen] = useState(false);
 
+  const [profileName, setProfileName] = useState("");
+  const [profileRole, setProfileRole] = useState("");
+
+  useEffect(() => {
+    const readProfile = () => {
+      try {
+        const raw = localStorage.getItem("teachment_profiles");
+        if (raw) {
+          const list = JSON.parse(raw);
+          if (list.length > 0) {
+            setProfileName(list[0].name || "");
+            setProfileRole(list[0].role || "");
+          }
+        }
+      } catch {}
+    };
+    readProfile();
+    window.addEventListener("storage", readProfile);
+    const interval = setInterval(readProfile, 1000);
+    return () => {
+      window.removeEventListener("storage", readProfile);
+      clearInterval(interval);
+    };
+  }, []);
+
   const pageComponents: Record<Page, React.ReactNode> = {
-    dashboard: <Dashboard onNavigate={setPage} />,
+    dashboard: <Dashboard onNavigate={setPage} profileName={profileName} />,
     students: <Students />,
     attendance: <Attendance />,
     assignments: <Assignments />,
@@ -78,10 +110,12 @@ export default function App() {
     announcements: <Announcements />,
     schedule: <Schedule />,
     messages: <Messages />,
+    recordings: <Recordings />,
+    profile: <Profile />,
   };
 
   const currentLabel =
-    navItems.find((n) => n.id === page)?.label ?? "EduConnect";
+    navItems.find((n) => n.id === page)?.label ?? "Teachment";
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -89,10 +123,12 @@ export default function App() {
       <aside className="hidden md:flex flex-col w-60 bg-card border-r border-border shrink-0 fixed h-full z-20">
         {/* Brand */}
         <div className="flex items-center gap-3 px-5 py-5 border-b border-border">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <GraduationCap size={18} className="text-primary-foreground" />
-          </div>
-          <span className="font-bold text-lg text-foreground">EduConnect</span>
+          <img
+            src="/assets/generated/teachment-icon-transparent.dim_128x128.png"
+            alt="Teachment"
+            className="w-8 h-8 object-contain"
+          />
+          <span className="font-bold text-lg text-foreground">Teachment</span>
         </div>
         {/* Nav */}
         <nav className="flex-1 py-4 px-3 overflow-y-auto">
@@ -101,6 +137,7 @@ export default function App() {
               type="button"
               key={item.id}
               onClick={() => setPage(item.id)}
+              data-ocid={`nav.${item.id}.link`}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-1 transition-colors ${
                 page === item.id
                   ? "bg-secondary text-primary"
@@ -119,13 +156,23 @@ export default function App() {
         <div className="p-4 border-t border-border">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
-              SJ
+              {profileName
+                ? profileName
+                    .split(" ")
+                    .filter(Boolean)
+                    .map((w: string) => w[0])
+                    .slice(0, 2)
+                    .join("")
+                    .toUpperCase()
+                : "U"}
             </div>
             <div>
               <div className="text-sm font-medium text-foreground">
-                Sarah Johnson
+                {profileName || "Umar Sir"}
               </div>
-              <div className="text-xs text-muted-foreground">Teacher</div>
+              <div className="text-xs text-muted-foreground">
+                {profileRole || "Teacher"}
+              </div>
             </div>
           </div>
         </div>
@@ -147,10 +194,18 @@ export default function App() {
           </button>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
-              SJ
+              {profileName
+                ? profileName
+                    .split(" ")
+                    .filter(Boolean)
+                    .map((w: string) => w[0])
+                    .slice(0, 2)
+                    .join("")
+                    .toUpperCase()
+                : "U"}
             </div>
             <span className="hidden md:inline text-sm font-medium text-foreground">
-              Ms. Sarah Johnson
+              {profileName || "Umar Sir"}
             </span>
           </div>
         </header>

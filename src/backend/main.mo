@@ -115,6 +115,16 @@ actor {
     isRead : Bool;
   };
 
+  type UserProfile = {
+    id : Text;
+    name : Text;
+    role : Text;
+    subject : Text;
+    phone : Text;
+    bio : Text;
+    school : Text;
+  };
+
   // STATE
 
   let classes = Map.empty<Text, Class>();
@@ -125,6 +135,7 @@ actor {
   let announcements = Map.empty<Text, Announcement>();
   let schedule = Map.empty<Text, ScheduleEntry>();
   let messages = Map.empty<Text, Message>();
+  let profiles = Map.empty<Text, UserProfile>();
 
   var nextClassId = 3;
   var nextStudentId = 9;
@@ -134,6 +145,7 @@ actor {
   var nextAnnouncementId = 4;
   var nextScheduleId = 1;
   var nextMessageId = 5;
+  var nextProfileId = 1;
 
   // HELPERS
 
@@ -208,7 +220,6 @@ actor {
     students.add(id, newStudent);
     nextStudentId += 1;
 
-    // Update class studentIds
     switch (classes.get(classId)) {
       case (?c) {
         let updatedClass : Class = {
@@ -242,7 +253,6 @@ actor {
 
     students.remove(studentId);
 
-    // Remove student from class studentIds
     switch (classes.get(student.classId)) {
       case (?c) {
         let updatedClass : Class = {
@@ -508,6 +518,45 @@ actor {
       }
     );
     unread.size();
+  };
+
+  // ACTOR METHODS - USER PROFILES
+
+  public shared ({ caller }) func createProfile(name : Text, role : Text, subject : Text, phone : Text, bio : Text, school : Text) : async Text {
+    let id = getNextId("profile-", nextProfileId);
+    let profile : UserProfile = {
+      id;
+      name;
+      role;
+      subject;
+      phone;
+      bio;
+      school;
+    };
+    profiles.add(id, profile);
+    nextProfileId += 1;
+    id;
+  };
+
+  public shared ({ caller }) func updateProfile(updatedProfile : UserProfile) : async Bool {
+    if (not profiles.containsKey(updatedProfile.id)) {
+      return false;
+    };
+    profiles.add(updatedProfile.id, updatedProfile);
+    true;
+  };
+
+  public query ({ caller }) func getProfile(profileId : Text) : async ?UserProfile {
+    profiles.get(profileId);
+  };
+
+  public query ({ caller }) func getAllProfiles() : async [UserProfile] {
+    profiles.values().toArray();
+  };
+
+  public shared ({ caller }) func deleteProfile(profileId : Text) : async Bool {
+    profiles.remove(profileId);
+    true;
   };
 
   // SEED DATA
