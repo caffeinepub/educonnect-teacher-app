@@ -114,9 +114,9 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
           })}
         </p>
         <h1 className="text-xl font-bold leading-tight">
-          Welcome Back,
+          Welcome,
           <br />
-          Ms. Sarah Johnson! 👋
+          Umar Sir! 👋
         </h1>
         <p className="text-sm opacity-70 mt-1">Have a great day teaching</p>
       </div>
