@@ -1,31 +1,19 @@
-# EduConnect Teacher App
+# Teachment
 
 ## Current State
-New project — no existing application files.
+Full teacher app with Dashboard, Students, Attendance, Assignments, Gradebook, Announcements, Schedule, Messages, Recordings, Profile. PWA enabled.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Full teacher dashboard app inspired by Teachmint
-- Dashboard with KPI cards (total students, attendance %, assignments due, upcoming classes)
-- My Classes section
-- Student management with roster
-- Attendance tracking (mark present/absent per student per day)
-- Assignments (create, list, status)
-- Gradebook (view and edit student grades per assignment)
-- Announcements (create and list)
-- Timetable (weekly class schedule view)
-- Messages section
-- Sidebar navigation with all sections
-- Mobile-friendly responsive layout
+- Live Classes section (Live Class Hub): Teachers can schedule live sessions with a title, class name, date/time, and a Zoom/Google Meet join link. Saved sessions are listed with a "Join Now" button that opens the link. Sessions can be deleted.
 
 ### Modify
-N/A
+- App.tsx: Add `live-classes` page type, import LiveClasses component, add to navItems and mobile menu
 
 ### Remove
-N/A
+- Nothing
 
 ## Implementation Plan
-1. Backend: classes, students, attendance records, assignments, grades, announcements, timetable slots, messages
-2. Frontend: sidebar nav, dashboard with KPIs and charts, all 8 section pages wired to backend
-3. Sample seed data pre-loaded for demo
+1. Create `src/frontend/src/pages/LiveClasses.tsx` with form to schedule a session and list of upcoming/past sessions
+2. Update App.tsx to include the new page

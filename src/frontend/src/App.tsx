@@ -11,6 +11,7 @@ import {
   Megaphone,
   Menu,
   MessageSquare,
+  Radio,
   UserCircle,
   Users,
   Video,
@@ -23,6 +24,7 @@ import Assignments from "./pages/Assignments";
 import Attendance from "./pages/Attendance";
 import Dashboard from "./pages/Dashboard";
 import Gradebook from "./pages/Gradebook";
+import LiveClasses from "./pages/LiveClasses";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import Recordings from "./pages/Recordings";
@@ -39,6 +41,7 @@ type Page =
   | "schedule"
   | "messages"
   | "recordings"
+  | "live-classes"
   | "profile";
 
 const navItems: { id: Page; label: string; icon: React.ReactNode }[] = [
@@ -59,6 +62,7 @@ const navItems: { id: Page; label: string; icon: React.ReactNode }[] = [
   { id: "schedule", label: "Schedule", icon: <Calendar size={20} /> },
   { id: "messages", label: "Messages", icon: <MessageSquare size={20} /> },
   { id: "recordings", label: "Recordings", icon: <Video size={20} /> },
+  { id: "live-classes", label: "Live Classes", icon: <Radio size={20} /> },
   { id: "profile", label: "Profile", icon: <UserCircle size={20} /> },
 ];
 
@@ -112,6 +116,7 @@ export default function App() {
     schedule: <Schedule />,
     messages: <Messages />,
     recordings: <Recordings />,
+    "live-classes": <LiveClasses />,
     profile: <Profile />,
   };
 
