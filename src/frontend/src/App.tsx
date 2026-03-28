@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import InstallPrompt from "./components/InstallPrompt";
 import Announcements from "./pages/Announcements";
 import Assignments from "./pages/Assignments";
 import Attendance from "./pages/Attendance";
@@ -119,6 +120,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-background flex">
+      <InstallPrompt />
+
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-60 bg-card border-r border-border shrink-0 fixed h-full z-20">
         {/* Brand */}
