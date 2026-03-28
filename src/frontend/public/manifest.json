@@ -1,18 +1,16 @@
 {
+  "id": "/",
   "name": "Umar Teachment App",
   "short_name": "Umar Teachment",
-  "description": "Teacher classroom management app",
-  "start_url": "/",
+  "description": "Teacher classroom management app by Umar Sir",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#2563eb",
   "theme_color": "#2563eb",
   "orientation": "portrait",
+  "prefer_related_applications": false,
   "icons": [
-    {
-      "src": "/assets/generated/teachment-icon-transparent.dim_128x128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
     {
       "src": "/assets/generated/teachment-icon.dim_192x192.png",
       "sizes": "192x192",

@@ -1,5 +1,5 @@
-const CACHE_NAME = 'teachment-v1';
-const STATIC_ASSETS = ['/'];
+const CACHE_NAME = 'teachment-v3';
+const STATIC_ASSETS = ['/', '/manifest.json'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

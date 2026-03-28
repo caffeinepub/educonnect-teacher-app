@@ -7,9 +7,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Umar Teachment App" />
-    <meta name="description" content="Teacher classroom management app" />
+    <meta name="description" content="Teacher classroom management app by Umar Sir" />
     <link rel="manifest" href="/manifest.json" />
-    <link rel="apple-touch-icon" href="/assets/generated/teachment-icon-transparent.dim_128x128.png" />
+    <link rel="apple-touch-icon" href="/assets/generated/teachment-icon.dim_192x192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/assets/generated/teachment-icon.dim_512x512.png" />
     <title>Umar Teachment App</title>
   </head>
   <body>
@@ -18,7 +19,9 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js');
+          navigator.serviceWorker.register('/sw.js').then(reg => {
+            reg.update();
+          });
         });
       }
     </script>
