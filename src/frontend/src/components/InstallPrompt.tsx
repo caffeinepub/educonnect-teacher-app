@@ -55,22 +55,22 @@ export default function InstallPrompt() {
       data-ocid="install.panel"
       className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-sm"
     >
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-green-100 dark:border-green-900 overflow-hidden">
-        {/* Green accent bar */}
-        <div className="h-1 w-full bg-gradient-to-r from-green-500 to-emerald-400" />
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-blue-100 dark:border-blue-900 overflow-hidden">
+        {/* Blue accent bar */}
+        <div className="h-1 w-full bg-gradient-to-r from-blue-600 to-blue-400" />
         <div className="flex items-center gap-3 px-4 py-3">
           {/* Icon */}
-          <div className="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
             <img
               src="/assets/generated/teachment-icon-transparent.dim_128x128.png"
-              alt="Teachment"
+              alt="Umar Teachment App"
               className="w-6 h-6 object-contain"
             />
           </div>
           {/* Text */}
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-gray-900 dark:text-white leading-tight">
-              Install Teachment
+              Install Umar Teachment App
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-tight">
               Add to home screen for quick access
@@ -81,7 +81,7 @@ export default function InstallPrompt() {
             type="button"
             data-ocid="install.primary_button"
             onClick={handleInstall}
-            className="flex items-center gap-1.5 bg-green-600 hover:bg-green-700 active:bg-green-800 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors shrink-0"
+            className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors shrink-0"
           >
             <Download size={13} />
             Install

@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -159,7 +159,7 @@ export default function Profile() {
           <p className="text-sm text-muted-foreground">
             {editingId
               ? "Update your profile details"
-              : "Add a new profile to Teachment"}
+              : "Add a new profile to Umar Teachment App"}
           </p>
         </div>
       </div>

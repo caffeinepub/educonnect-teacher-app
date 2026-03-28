@@ -1,11 +1,11 @@
 {
-  "name": "Teachment",
-  "short_name": "Teachment",
+  "name": "Umar Teachment App",
+  "short_name": "Umar Teachment",
   "description": "Teacher classroom management app",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#16a34a",
+  "theme_color": "#2563eb",
   "orientation": "portrait",
   "icons": [
     {

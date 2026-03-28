@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -34,6 +35,21 @@ import type { Assignment } from "../backend";
 import { useActor } from "../hooks/useActor";
 
 const today = new Date().toISOString().split("T")[0];
+const SUBMISSIONS_KEY = "teachment_submissions";
+
+type SubmissionsMap = Record<string, Record<string, boolean>>;
+
+function loadSubmissions(): SubmissionsMap {
+  try {
+    const raw = localStorage.getItem(SUBMISSIONS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return {};
+}
+
+function saveSubmissions(map: SubmissionsMap) {
+  localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(map));
+}
 
 export default function Assignments() {
   const { actor } = useActor();
@@ -49,6 +65,8 @@ export default function Assignments() {
     dueDate: "",
     maxScore: "100",
   });
+  const [submissions, setSubmissions] =
+    useState<SubmissionsMap>(loadSubmissions);
 
   const { data: assignments, isLoading } = useQuery({
     queryKey: ["assignments"],
@@ -113,6 +131,18 @@ export default function Assignments() {
 
   const upcoming = (assignments ?? []).filter((a) => a.dueDate >= today);
   const past = (assignments ?? []).filter((a) => a.dueDate < today);
+
+  const toggleSubmission = (assignmentId: string, studentId: string) => {
+    setSubmissions((prev) => {
+      const aMap = prev[assignmentId] ?? {};
+      const updated = {
+        ...prev,
+        [assignmentId]: { ...aMap, [studentId]: !aMap[studentId] },
+      };
+      saveSubmissions(updated);
+      return updated;
+    });
+  };
 
   const AssignmentCard = ({ assignment }: { assignment: Assignment }) => (
     <button
@@ -303,7 +333,7 @@ export default function Assignments() {
         open={!!detailAssignment}
         onOpenChange={(o) => !o && setDetailAssignment(null)}
       >
-        <DialogContent className="max-w-sm mx-auto">
+        <DialogContent className="max-w-sm mx-auto max-h-[85vh] overflow-y-auto">
           {detailAssignment && (
             <>
               <DialogHeader>
@@ -366,6 +396,70 @@ export default function Assignments() {
                                 ? `${Number(grade.score)} / ${Number(detailAssignment.maxScore)}`
                                 : "Not graded"}
                             </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Submissions */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Submissions
+                    </h4>
+                    {(classStudents ?? []).length > 0 && (
+                      <Badge variant="secondary" className="text-xs">
+                        {
+                          Object.values(
+                            submissions[detailAssignment.id] ?? {},
+                          ).filter(Boolean).length
+                        }
+                        {" / "}
+                        {(classStudents ?? []).length} submitted
+                      </Badge>
+                    )}
+                  </div>
+                  {(classStudents ?? []).length === 0 ? (
+                    <div className="text-sm text-muted-foreground">
+                      No students
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {(classStudents ?? []).map((s) => {
+                        const submitted =
+                          !!submissions[detailAssignment.id]?.[s.id];
+                        return (
+                          <div
+                            key={s.id}
+                            className="flex items-center justify-between text-sm"
+                          >
+                            <span className="text-foreground">{s.name}</span>
+                            <button
+                              type="button"
+                              className="flex items-center gap-2 cursor-pointer select-none bg-transparent border-0 p-0"
+                              onClick={() =>
+                                toggleSubmission(detailAssignment.id, s.id)
+                              }
+                            >
+                              <Checkbox
+                                checked={submitted}
+                                data-ocid="assignments.checkbox"
+                                onCheckedChange={() =>
+                                  toggleSubmission(detailAssignment.id, s.id)
+                                }
+                              />
+                              <span
+                                className={`text-xs font-medium ${
+                                  submitted
+                                    ? "text-green-600"
+                                    : "text-muted-foreground"
+                                }`}
+                              >
+                                {submitted ? "Submitted" : "Not Submitted"}
+                              </span>
+                            </button>
                           </div>
                         );
                       })}
